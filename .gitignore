@@ -5,3 +5,5 @@ dist
 .env*
 coverage
 .vercel
+video-assets/
+BlockBuilder-WebMCP-Demo.mp4
