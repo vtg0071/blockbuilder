@@ -831,7 +831,7 @@ function Planner({
   const previewRepair = () => {
     const target = [...state.sessions]
       .filter((session) => !session.locked)
-      .sort((a, b) => Number(b.type === "power") - Number(a.type === "power") || sessionLoad(b) - sessionLoad(a))[0];
+      .sort((a, b) => a.week - b.week || Number(b.type === "power") - Number(a.type === "power") || sessionLoad(b) - sessionLoad(a))[0];
 
     if (!target) {
       onToast("Unlock one session to preview a repair");
