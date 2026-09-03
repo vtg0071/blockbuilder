@@ -32,6 +32,7 @@ import {
   type PlanMetrics,
   type PlanProposal,
   type PlanState,
+  type ProposedChange,
   type Session,
   type SessionType,
   type WeekFocus,
@@ -712,11 +713,13 @@ function RepairComposer({
   value,
   onChange,
   onSubmit,
+  onPreview,
   connected,
 }: {
   value: string;
   onChange: (value: string) => void;
   onSubmit: () => void;
+  onPreview: () => void;
   connected: boolean;
 }) {
   return (
@@ -740,6 +743,7 @@ function RepairComposer({
         {REPAIR_EXAMPLES.map((example) => (
           <button type="button" key={example} onClick={() => onChange(example)}>{example}</button>
         ))}
+        {!connected && <button type="button" onClick={onPreview}>Preview a repair</button>}
       </div>
       <div className="repair-submit-row">
         <p>ChatGPT will inspect the live plan and return a safe patch for approval.</p>
@@ -823,6 +827,41 @@ function Planner({
   const editorCloseTimer = useRef<number | null>(null);
   const profileReady = Boolean(state.profile.sport.trim() && state.profile.goal.trim() && state.profile.daysAvailable.length);
   const hasPlan = state.sessions.length > 0;
+
+  const previewRepair = () => {
+    const target = [...state.sessions]
+      .filter((session) => !session.locked)
+      .sort((a, b) => Number(b.type === "power") - Number(a.type === "power") || sessionLoad(b) - sessionLoad(a))[0];
+
+    if (!target) {
+      onToast("Unlock one session to preview a repair");
+      return;
+    }
+
+    const patch = {
+      rpe: Math.max(1, target.rpe - 2),
+      durationMin: Math.max(10, target.durationMin - 15),
+      notes: `${target.notes ? `${target.notes} ` : ""}Reduced for recovery while protected commitments stay fixed.`,
+    };
+    const change: ProposedChange = { operation: "update", id: target.id, patch };
+    const nextSessions = state.sessions.map((session) => session.id === target.id ? { ...session, ...patch } : session);
+    const afterMetrics = calculateMetrics({ ...state, sessions: nextSessions });
+    const proposal: PlanProposal = {
+      id: `preview-${Date.now()}`,
+      summary: "Reduce stress without moving protected practice",
+      rationale: "This keeps athlete-owned commitments fixed and trims the highest relevant unlocked session so recovery improves without rebuilding the whole block.",
+      changes: [change],
+      descriptions: [`Update ${target.title} · RPE ${target.rpe} → ${patch.rpe} · ${target.durationMin} → ${patch.durationMin} min`],
+      baseRevision: state.revision,
+      loads: metrics.weeks.map((week, index) => ({ week: week.week, before: week.load, after: afterMetrics.weeks[index].load })),
+      beforeFlagCount: metrics.flags.length,
+      afterFlagCount: afterMetrics.flags.length,
+      createdAt: new Date().toISOString(),
+    };
+
+    planStore.dispatch({ type: "SET_PROPOSAL", proposal, actor: "agent" });
+    onToast("Example repair ready for review");
+  };
   const lockedCount = state.sessions.filter((session) => session.locked).length;
   const connected = status?.registered === 10;
 
@@ -886,7 +925,7 @@ function Planner({
         {hasPlan && <button type="button" className="edit-context-button" onClick={onOpenProfile}><Icon name="profile" size={15} />Athlete details</button>}
       </header>
 
-      {hasPlan && <RepairComposer value={repairRequest} onChange={setRepairRequest} onSubmit={() => onCopyAgentPrompt(repairRequest)} connected={connected} />}
+      {hasPlan && <RepairComposer value={repairRequest} onChange={setRepairRequest} onSubmit={() => onCopyAgentPrompt(repairRequest)} onPreview={previewRepair} connected={connected} />}
 
       {state.proposal && <ProposalCard proposal={state.proposal} revision={state.revision} onToast={onToast} />}
 

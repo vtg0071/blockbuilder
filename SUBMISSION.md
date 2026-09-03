@@ -88,7 +88,7 @@ In **What changed?**, enter:
 
 - [x] Public repository URL — [github.com/vtg0071/blockbuilder](https://github.com/vtg0071/blockbuilder)
 - [x] Live HTTPS Vercel URL — [blockbuilder-jet.vercel.app](https://blockbuilder-jet.vercel.app)
-- [ ] Unlisted YouTube video (≤2 minutes)
+- [ ] Public YouTube demo video with narration (under 3 minutes)
 - [ ] Devpost one-liner and description
 - [ ] README tool table and run instructions
 - [ ] Test Site tools from the deployed top-level page

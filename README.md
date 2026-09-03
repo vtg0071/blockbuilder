@@ -167,3 +167,7 @@ Browser QA additionally covers Plan / Athlete / Review navigation, the responsiv
 ## Privacy
 
 BlockBuilder stores the plan only in the current browser. Export is user-initiated. There are no accounts, analytics, API calls, or remote data stores.
+
+## License
+
+Released under the [MIT License](LICENSE).
