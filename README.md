@@ -6,6 +6,10 @@ BlockBuilder turns “my week changed” into a safe, reviewable training-plan p
 
 Built for the 2026 WebMCP Challenge.
 
+**Live app:** [blockbuilder-jet.vercel.app](https://blockbuilder-jet.vercel.app)
+
+**Source:** [github.com/vtg0071/blockbuilder](https://github.com/vtg0071/blockbuilder)
+
 ## Why the collaboration matters
 
 Static plans break as soon as real life changes. Rebuilding a schedule by hand means rechecking progression, recovery, availability, and fixed commitments after every adjustment. BlockBuilder gives ChatGPT that bounded repair job while preserving athlete authority:
@@ -134,6 +138,8 @@ The synchronous store is deliberate: a tool mutation can update the visible Reac
 ## Deploy
 
 The repository includes `vercel.json` and builds as a static Vite site.
+
+The production deployment is available at [blockbuilder-jet.vercel.app](https://blockbuilder-jet.vercel.app). The Vercel project is connected to this GitHub repository, so future pushes to `main` deploy automatically.
 
 ```bash
 npm run build

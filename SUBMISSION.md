@@ -1,5 +1,10 @@
 # BlockBuilder — submission kit
 
+## Submission URLs
+
+- **Live app:** [https://blockbuilder-jet.vercel.app](https://blockbuilder-jet.vercel.app)
+- **Public repository:** [https://github.com/vtg0071/blockbuilder](https://github.com/vtg0071/blockbuilder)
+
 ## Devpost one-liner
 
 A training-plan repair workspace where ChatGPT adapts the remaining schedule when real life changes, while protected commitments stay under athlete control.
@@ -81,8 +86,8 @@ In **What changed?**, enter:
 
 ## Submission checklist
 
-- [ ] Public repository URL
-- [ ] Live HTTPS Vercel URL
+- [x] Public repository URL — [github.com/vtg0071/blockbuilder](https://github.com/vtg0071/blockbuilder)
+- [x] Live HTTPS Vercel URL — [blockbuilder-jet.vercel.app](https://blockbuilder-jet.vercel.app)
 - [ ] Unlisted YouTube video (≤2 minutes)
 - [ ] Devpost one-liner and description
 - [ ] README tool table and run instructions
